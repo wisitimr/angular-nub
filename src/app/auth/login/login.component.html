@@ -1,0 +1,52 @@
+<div style="padding-left: 15px;">
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <label style="color: #0055b0;margin-left: 10px !important;"><b>Username</b></label>
+                <div class="form-group">
+                    <input type="text" id="username" class="fadeIn second login-info-box" maxlength="20" autofocus
+                        style="border:1px solid #d9eafc;" name="username" formControlName="username">
+                    <small style="padding-left:9px;" class="text-danger"
+                        *ngIf="isSubmitted && form.controls['username'].errors">กรุณาระบุ username</small>
+                </div>
+                <label style="color: #0055b0;margin-top: 10px;margin-left: 10px !important;"><b>Password</b></label>
+                <div class="form-group">
+                    <input type="{{showPassword ? 'text': 'password'}}" id="password"
+                        class="fadeIn third login-info-box" maxlength="20" style="border:1px solid #d9eafc;"
+                        name="password" formControlName="password">
+                    <i *ngIf="showPassword && !user?.data?.companies?.length"
+                        class="material-icons md-18 cursor-pointer" (click)="showOrHide()">
+                        visibility
+                    </i>
+                    <i *ngIf="!showPassword && !user?.data?.companies?.length"
+                        class="material-icons md-18 cursor-pointer" (click)="showOrHide()">
+                        visibility_off
+                    </i>
+                    <small style="padding-left:9px;" class="text-danger"
+                        *ngIf="isSubmitted && form.controls['password'].errors">กรุณาระบุ password</small>
+                </div>
+                <div *ngIf="!user?.data?.companies?.length" style="text-align: center;margin-top: 20px;">
+                    <button class="btn btn-primary" type="submit">Log In</button>
+                </div>
+            </form>
+            <ng-container *ngIf="user?.data?.companies?.length > 1">
+                <form [formGroup]="companyForm" (ngSubmit)="selectCompany()">
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="id" style="color: #0055b0;margin-left: 10px !important;"><b>Company</b></label>
+                        <select id="id" name="id" class="form-select login-info-box"
+                            style="border:1px solid #d9eafc;margin: 5px;" formControlName="id">
+                            <option value="">--- Select ---</option>
+                            <option *ngFor="let company of user?.data?.companies" [value]="company.id">
+                                {{company.name}}</option>
+                        </select>
+                    </div>
+                    <div style="text-align: center;margin-top: 20px;">
+                        <button [disabled]="companyForm.value.id === ''" class="btn btn-primary"
+                            style="margin-right: 3%;" type="submit">Submit</button>
+                        <a class="btn btn-link" style="color: primary" (click)="cancelSelectCompany()">Cancel</a>
+                    </div>
+                </form>
+            </ng-container>
+        </div>
+    </div>
+</div>

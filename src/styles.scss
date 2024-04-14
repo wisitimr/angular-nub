@@ -1,0 +1,59 @@
+/* Add application styles & imports to this file! */
+
+@font-face {
+    font-family: db_heaventcond;
+    src: url("/assets/font/DBHeaventRoundedCondv32.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: db_heaventmed_cond;
+    src: url("/assets/font/DBHeaventRoundedMedCondv32.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: db_heavent;
+    src: url("/assets/font/DBHeaventv3.2.ttf") format("opentype");
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-container {
+    min-height: 320px;
+    overflow: hidden;
+}
+
+.btn-delete-user {
+    width: 40px;
+    text-align: center;
+    box-sizing: content-box;
+}
+
+.content {
+    padding-top: 10px;
+    margin-left: 300px;
+    // margin-top: 70px;
+} 
+
+.content-bg {
+    min-height: 974px;
+    // background: url("/assets/images/ais.jpeg");
+    // background-repeat: repeat-x;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.gray-bg {
+    background-color: #f1f1f1;
+    //box-shadow: -10px 0px 10px -8px rgba(1, 1, 1, 0.1);
+    // -moz-box-shadow: -10px 0px 10px -8px rgba(1, 1, 1, 0.1);
+    // -webkit-box-shadow: -10px 0px 10px -8px rgba(1, 1, 1, 0.1);
+}

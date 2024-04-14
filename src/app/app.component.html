@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <ng-container *ngIf="user != null">
+        <app-sidenav></app-sidenav>
+        <!-- <app-topnav></app-topnav> -->
+    </ng-container>
+    <div class="row gray-bg content-bg">
+        <div class="col-sm-12">
+            <alert></alert>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
