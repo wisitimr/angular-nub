@@ -69,9 +69,7 @@ export class LoginComponent implements OnInit {
                 }
                 this.loginSucceeded(this.user.data)
             }
-        } catch (error) {
-            console.log('error :', JSON.stringify(error));
-            
+        } catch (error) { 
             this.alertService.error(error);
             this.loading = false;
         }
