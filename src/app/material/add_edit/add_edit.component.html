@@ -1,45 +1,49 @@
 <div class="content">
     <h1>{{title}}</h1>
-    <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="mb-3 col">
-                <label class="form-label">
-                    <b>Code</b>
-                </label>
-                <input type="text" formControlName="code" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
-                <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
-                    <div *ngIf="f.code.errors.required">Code is required</div>
+    <mat-card>
+        <mat-card-content>
+            <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Code</b>
+                        </label>
+                        <input type="text" formControlName="code" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
+                        <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                            <div *ngIf="f.code.errors.required">Code is required</div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Name</b>
+                        </label>
+                        <input type="text" formControlName="name" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                            <div *ngIf="f.name.errors.required">Name is required</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3 col">
-                <label class="form-label">
-                    <b>Name</b>
-                </label>
-                <input type="text" formControlName="name" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                    <div *ngIf="f.name.errors.required">Name is required</div>
+                <div class="row">
+                    <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Description</b>
+                        </label>
+                        <input type="text" formControlName="description" class="form-control" />
+                    </div>
                 </div>
+                <div class="mt-3">
+                    <button [disabled]="submitting" class="btn btn-primary">
+                        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                        Save
+                    </button>
+                    <a routerLink="/material" class="btn btn-link">Cancel</a>
+                </div>
+            </form>
+            <div *ngIf="loading" class="text-center m-5">
+                <span class="spinner-border spinner-border-lg align-center"></span>
             </div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-6">
-                <label class="form-label">
-                    <b>Description</b>
-                </label>
-                <input type="text" formControlName="description" class="form-control" />
-            </div>
-        </div>
-        <div class="mb-3">
-            <button [disabled]="submitting" class="btn btn-primary">
-                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
-                Save
-            </button>
-            <a routerLink="/material" class="btn btn-link">Cancel</a>
-        </div>
-    </form>
-    <div *ngIf="loading" class="text-center m-5">
-        <span class="spinner-border spinner-border-lg align-center"></span>
-    </div>
+        </mat-card-content>
+    </mat-card>
 </div>

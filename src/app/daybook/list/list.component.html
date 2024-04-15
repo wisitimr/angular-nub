@@ -1,12 +1,12 @@
 <div class="content">
-    <h1>Account</h1>
+    <h1>สมุดรายวัน</h1>
     <div class="col-12 text-right">
         <button routerLink="add" class="btn btn-sm btn-success mb-2 ml-auto d-flex align-items-center">
             <mat-icon>add</mat-icon>
             Add
         </button>
     </div>
-    <p-table #dt [columns]="cols" [value]="accounts" dataKey="id" [rowHover]="true" [rows]="10"
+    <p-table #dt [columns]="cols" [value]="daybooks" dataKey="id" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         styleClass="p-datatable-account p-datatable-gridlines">
@@ -31,17 +31,22 @@
                 <th class="text-center">...</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-account let-columns="columns">
+        <ng-template pTemplate="body" let-daybook let-columns="columns">
             <tr>
                 <td *ngFor="let col of columns">
-                    {{account[col.field]}}
+                    <ng-container *ngIf="!col.date">
+                        {{getValue(daybook, col.field)}}
+                    </ng-container>
+                    <ng-container *ngIf="col.date">
+                        {{getValue(daybook, col.field) | date: col.date}}
+                    </ng-container>
                 </td>
                 <td style="white-space: nowrap">
-                    <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
-                    <button (click)="deleteAccount(account.id)" class="btn btn-sm btn-danger btn-delete-account"
-                        [disabled]="account.isDeleting">
-                        <span *ngIf="account.isDeleting" class="spinner-border spinner-border-sm"></span>
-                        <span *ngIf="!account.isDeleting">Delete</span>
+                    <a routerLink="edit/{{daybook.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
+                    <button (click)="deleteDaybook(daybook.id)" class="btn btn-sm btn-danger btn-delete-daybook"
+                        [disabled]="daybook.isDeleting">
+                        <span *ngIf="daybook.isDeleting" class="spinner-border spinner-border-sm"></span>
+                        <span *ngIf="!daybook.isDeleting">Delete</span>
                     </button>
                 </td>
             </tr>

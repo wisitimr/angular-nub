@@ -1,5 +1,5 @@
-import { trigger, transition, style, animate, state, query, sequence, stagger } from '@angular/animations';
-import { Component, Injectable, Input, OnInit } from '@angular/core';
+import { trigger, transition, style, animate, query, sequence, stagger } from '@angular/animations';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map } from 'rxjs/operators';
@@ -58,6 +58,10 @@ export class SidenavComponent implements OnInit {
       route: 'dashboard'
     },
     {
+      name: 'สมุดรายวัน',
+      route: 'daybook'
+    },
+    {
       name: 'Setting',
       children: [
         {
@@ -80,6 +84,63 @@ export class SidenavComponent implements OnInit {
           name: 'Material',
           route: 'material'
         }
+      ]
+    },
+    {
+      name: 'Report',
+      children: [
+        {
+          name: 'แยกประเภท',
+          route: 'ledger'
+        },
+        {
+          name: 'กระดาษทำการ',
+          route: 'workingPapers'
+        },
+        {
+          name: 'TB12',
+          route: 'tb12'
+        },
+        {
+          name: 'งบประมาณ',
+          route: 'budget'
+        },
+        {
+          name: 'งบแสดงส่วนผู้ถือหุ้น',
+          route: 'shareholdersEquityBudget'
+        },
+        {
+          name: 'wps&wpl',
+          route: 'wpswpl'
+        },
+        {
+          name: 'C1',
+          route: 'c1'
+        },
+        {
+          name: 'C2',
+          route: 'c2'
+        },
+        {
+          name: 'C3',
+          route: 'c3'
+        },
+        {
+          name: 'C4',
+          route: 'c4'
+        },
+        {
+          name: 'C5',
+          route: 'c5'
+        },
+        {
+          name: 'C6',
+          route: 'c6'
+        },
+        {
+          name: 'C7',
+          route: 'c7'
+        },
       ]
     },
     {
@@ -156,10 +217,7 @@ export class SidenavComponent implements OnInit {
         filter((event) => event instanceof NavigationEnd),
         map(() => {
           const node = this.findMenuItemByRoute(this.menu, this.router.url);
-          let title = node?.name || 'Nub';
-          if (title) {
-            return title;
-          }
+          return node?.name;
         })
       )
       .subscribe((title) => {
@@ -170,15 +228,18 @@ export class SidenavComponent implements OnInit {
   setTitleByCondition(title) {
     let msg;
     if (title) {
-      if (this.router.url.indexOf('create') != -1) {
+      if (this.router.url.indexOf('add') != -1) {
         msg = `Add ${title}`;
       } else if (this.router.url.indexOf('edit') != -1) {
         msg = `Edit ${title}`;
       } else {
         msg = `${title}`;
       }
-      this.titleService.setTitle(`${msg} - Nub`);
+      msg = `${msg} - Nub`
+    } else {
+      msg = 'Nub'
     }
+    this.titleService.setTitle(msg);
   }
 
 

@@ -9,7 +9,7 @@
     <p-table #dt [columns]="cols" [value]="products" dataKey="id" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        styleClass="p-datatable-account p-datatable-gridlines" [globalFilterFields]="['username','fullName']">
+        styleClass="p-datatable-account p-datatable-gridlines">
         <!-- <ng-template pTemplate="caption">
             <div class="flex">
                 <span class="p-input-icon-left ml-auto">

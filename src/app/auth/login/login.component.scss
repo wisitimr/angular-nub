@@ -1,11 +1,23 @@
 /* BASIC */
+:host {
+  --background-color: hsl(0, 0%, 99%);
+  --primary-color: #b2cf30;
+  --secondary-color: #a0ba2b;
+  --border-color: #efefef;
+  --text-color: #2c2f32;
+  --text-color-selected: #2c2f32;
+  --data-select-color: white;
+  --data-hover-color: #eee;
+
+  --font: db_heaventmed_cond;
+}
 
 html {
   background-color: #56baed;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font);
   height: 100vh;
 }
 

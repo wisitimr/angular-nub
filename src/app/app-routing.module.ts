@@ -10,11 +10,17 @@ import { SupplierModule } from './supplier/supplier.module';
 import { CustomerModule } from './customer/customer.module';
 import { ProductModule } from './product/product.module';
 import { MaterialModule } from './material/material.module';
+import { DaybookModule } from './daybook/daybook.module';
 
 const routes: Routes = [
     {
         path: 'dashboard',
         loadChildren: () => DashboardModule,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'daybook',
+        loadChildren: () => DaybookModule,
         canActivate: [AuthGuard]
     },
     {
