@@ -9,7 +9,7 @@ export class ListComponent implements OnInit {
     cols?: any = [
         { field: 'code', header: 'Code' },
         { field: 'name', header: 'Name' },
-        { field: 'type', header: 'Type' },
+        { field: 'type.name', header: 'Type' },
     ];
     @ViewChild('dt') table: Table;
 
@@ -25,5 +25,18 @@ export class ListComponent implements OnInit {
     deleteAccount(id: string) {
         const account = this.accounts!.find(x => x.id === id);
         account.isDeleting = true;
+    }
+
+    getValue(data, field) {
+        const fields = field.split('.');
+        if (fields.length > 1) {
+            var r = data
+            for (const f of fields) {
+                r = r[f]
+            }
+            return r
+        } else {
+            return data[field]
+        }
     }
 }

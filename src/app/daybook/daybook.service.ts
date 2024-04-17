@@ -32,11 +32,11 @@ export class DaybookService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.apiUrl}/daybooks/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.apiUrl}/daybook/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.apiUrl}/daybooks`, params));
+        return await lastValueFrom(this.http.post(`${environment.apiUrl}/daybook`, params));
     }
 
     async delete(id: string) {

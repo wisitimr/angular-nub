@@ -6,14 +6,14 @@ import { AlertService } from 'src/app/_components/alert/alert.service';
 import { AccountService } from '../account.service';
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
+import { BaseComponent } from 'src/app/_components/base.component';
 
-@Component({ templateUrl: 'add_edit.component.html' })
-export class AddEditComponent implements OnInit {
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent extends BaseComponent implements OnInit {
     form!: FormGroup;
     id?: string;
     title!: string;
     loading = false;
-    submitting = false;
     submitted = false;
     accountTypes: any = [];
 
@@ -34,9 +34,12 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) { }
+    ) {
+        super()
+    }
 
     async ngOnInit() {
+        this.loading = true;
         await this.getAccountType()
         this.id = this.route.snapshot.params['id'];
 
@@ -44,40 +47,23 @@ export class AddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             code: ['', Validators.required],
             name: ['', Validators.required],
-            description: ['', Validators.required],
-            type: ['', Validators.required],
+            description: [''],
+            type: [''],
         });
 
         this.title = 'Add Account';
         if (this.id) {
             // edit mode
             this.title = 'Edit Account';
-            this.loading = true;
             const user = await this.accountService.getById(this.id)
             this.form.patchValue(user);
-            this.loading = false;
         }
         this.initFilter()
+        this.loading = false;
     }
 
     initFilter() {
-        // set initial selection
-        this.accountTypeFilterCtrl.setValue(this.accountTypes[10]);
-
-        // load the initial bank list
-        this.filteredAccountTypes.next(this.accountTypes.slice());
-
-        // listen for search field value changes
-        this.accountTypeFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterAccountTypes();
-            });
-
-        // set initial selection
-        this.accountTypeFilterCtrl.setValue(this.accountTypes[10]);
-
-        // load the initial bank list
+        // load the initial list
         this.filteredAccountTypes.next(this.accountTypes.slice());
 
         // listen for search field value changes
@@ -115,8 +101,7 @@ export class AddEditComponent implements OnInit {
 
 
     async onSubmit() {
-        this.submitted = true;
-
+        this.submitted = true
         // reset alerts on submit
         this.alertService.clear();
 
@@ -124,8 +109,6 @@ export class AddEditComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
-
-        this.submitting = true;
         try {
             var res = await this.save();
             if (res) {
@@ -134,7 +117,8 @@ export class AddEditComponent implements OnInit {
             }
         } catch (error) {
             this.alertService.error(error);
-            this.submitting = false;
+        } finally {
+            this.submitted = false
         }
     }
 

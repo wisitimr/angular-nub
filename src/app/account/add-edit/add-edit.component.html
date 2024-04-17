@@ -7,17 +7,25 @@
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
                             <b>Code</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="code" placeholder="Code" required />
+                            <mat-error *ngIf="form.controls['code']?.errors">
+                                <strong>Code is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
                             <b>Name</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="name" placeholder="Name" required />
+                            <mat-error *ngIf="form.controls['name']?.errors">
+                                <strong>Name is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -25,9 +33,13 @@
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
                             <b>Description</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="description" placeholder="Description" />
+                            <mat-error *ngIf="form.controls['description']?.errors">
+                                <strong>Description is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
@@ -35,21 +47,24 @@
                             <b>Type</b>
                         </label>
                         <mat-form-field appearance="fill">
-                            <mat-select formControlName="type" #accountTypeSelect>
+                            <mat-select formControlName="type" placeholder="Type" #accountTypeSelect>
                                 <mat-option>
-                                    <ngx-mat-select-search placeholder="Type" placeholderLabel="Search"
+                                    <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="No matching found"
                                         [formControl]="accountTypeFilterCtrl"></ngx-mat-select-search>
                                 </mat-option>
                                 <mat-option *ngFor="let e of filteredAccountTypes | async" [value]="e.id">
                                     {{e.name}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="form.controls['type']?.errors">
+                                <strong>Type is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <button [disabled]="submitting" class="btn btn-primary">
-                        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                    <button [disabled]="!isPassValidation(form)" class="btn btn-primary">
+                        <span *ngIf="submitted" class="spinner-border spinner-border-sm me-1"></span>
                         Save
                     </button>
                     <a routerLink="/account" class="btn btn-link">Cancel</a>

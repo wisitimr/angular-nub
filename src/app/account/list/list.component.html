@@ -34,7 +34,7 @@
         <ng-template pTemplate="body" let-account let-columns="columns">
             <tr>
                 <td *ngFor="let col of columns">
-                    {{account[col.field]}}
+                    {{getValue(account, col.field)}}
                 </td>
                 <td style="white-space: nowrap">
                     <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary me-1">Edit</a>

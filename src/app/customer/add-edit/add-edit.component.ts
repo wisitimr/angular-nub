@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/_components/alert/alert.service';
-import { ProductService } from '../product.service';
+import { CustomerService } from '../customer.service';
+import { BaseComponent } from 'src/app/_components/base.component';
 
-@Component({ templateUrl: 'add_edit.component.html' })
-export class AddEditComponent implements OnInit {
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent extends BaseComponent implements OnInit {
     form!: FormGroup;
     id?: string;
     title!: string;
@@ -17,9 +18,11 @@ export class AddEditComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private productService: ProductService,
+        private customerService: CustomerService,
         private alertService: AlertService
-    ) { }
+    ) { 
+        super()
+    }
 
     async ngOnInit() {
         this.id = this.route.snapshot.params['id'];
@@ -28,16 +31,17 @@ export class AddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             code: ['', Validators.required],
             name: ['', Validators.required],
-            description: ['', Validators.required],
-            price: ['', Validators.required],
+            address: [''],
+            phone: [''],
+            contact: [''],
         });
 
-        this.title = 'Add Product';
+        this.title = 'Add Customer';
         if (this.id) {
             // edit mode
-            this.title = 'Edit Product';
+            this.title = 'Edit Customer';
             this.loading = true;
-            const user = await this.productService.getById(this.id)
+            const user = await this.customerService.getById(this.id)
             this.form.patchValue(user);
             this.loading = false;
         }
@@ -61,8 +65,8 @@ export class AddEditComponent implements OnInit {
         try {
             var res = await this.save();
             if (res) {
-                this.alertService.success('Product saved', { keepAfterRouteChange: true });
-                this.router.navigateByUrl('/product');
+                this.alertService.success('Customer saved', { keepAfterRouteChange: true });
+                this.router.navigateByUrl('/customer');
             }
         } catch (error) {
             this.alertService.error(error);
@@ -73,7 +77,7 @@ export class AddEditComponent implements OnInit {
     private save() {
         // create or update user based on id param
         return this.id
-            ? this.productService.update(this.id!, this.form.value)
-            : this.productService.add(this.form.value);
+            ? this.customerService.update(this.id!, this.form.value)
+            : this.customerService.add(this.form.value);
     }
 }

@@ -5,9 +5,10 @@ import { first } from 'rxjs/operators';
 import { UserService } from 'src/app/user/user.service';
 import { AlertService } from 'src/app/_components/alert/alert.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BaseComponent } from 'src/app/_components/base.component';
 
-@Component({ templateUrl: 'add_edit.component.html' })
-export class AddEditComponent implements OnInit {
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent extends BaseComponent implements OnInit {
     form!: FormGroup;
     id?: string;
     title!: string;
@@ -22,9 +23,12 @@ export class AddEditComponent implements OnInit {
         private userService: UserService,
         private authService: AuthService,
         private alertService: AlertService
-    ) { }
+    ) {
+        super()
+    }
 
     async ngOnInit() {
+        this.loading = true;
         this.id = this.route.snapshot.params['id'];
 
         // form with validation rules
@@ -47,11 +51,10 @@ export class AddEditComponent implements OnInit {
         if (this.id) {
             // edit mode
             this.title = 'Edit User';
-            this.loading = true;
             const user = await this.userService.getById(this.id)
             this.form.patchValue(user);
-            this.loading = false;
         }
+        this.loading = false;
     }
 
     // convenience getter for easy access to form fields
@@ -68,7 +71,6 @@ export class AddEditComponent implements OnInit {
             return;
         }
 
-        this.submitting = true;
         this.saveUser()
             .pipe(first())
             .subscribe({
@@ -81,6 +83,7 @@ export class AddEditComponent implements OnInit {
                     this.submitting = false;
                 }
             })
+        this.submitted = false
     }
 
     private saveUser() {

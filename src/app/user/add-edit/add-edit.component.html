@@ -6,18 +6,26 @@
                 <div class="row">
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>First Name</b>
+                            <b>FirstName</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="firstName" placeholder="First Name" />
+                            <mat-error *ngIf="form.controls['firstName']?.errors">
+                                <strong>FirstName is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Last Name</b>
+                            <b>LastName</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
-                            <input matInput formControlName="lastName" placeholder="Last Name" />
+                            <input matInput formControlName="lastname" placeholder="LastName" />
+                            <mat-error *ngIf="form.controls['lastname']?.errors">
+                                <strong>LastName is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -25,23 +33,31 @@
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
                             <b>Username</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="username" placeholder="User Name" />
+                            <mat-error *ngIf="form.controls['username']?.errors">
+                                <strong>Username is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
                             <b>Email</b>
+                            <span class="text-danger">*</span>
                         </label>
                         <mat-form-field appearance="fill">
                             <input matInput formControlName="email" placeholder="Email" />
+                            <mat-error *ngIf="form.controls['email']?.errors">
+                                <strong>Email is required</strong>
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="mt-3">
-                    <button [disabled]="submitting" class="btn btn-primary">
-                        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                    <button [disabled]="!isPassValidation(form)" class="btn btn-primary">
+                        <span *ngIf="submitted" class="spinner-border spinner-border-sm me-1"></span>
                         Save
                     </button>
                     <a routerLink="/user" class="btn btn-link">Cancel</a>

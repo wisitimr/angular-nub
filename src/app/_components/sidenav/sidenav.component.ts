@@ -12,7 +12,6 @@ import * as _ from 'lodash';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   animations: [
-
     trigger('slideInOut', [
       transition(":enter", [
         style({ height: 0, overflow: "hidden" }),
@@ -28,7 +27,6 @@ import * as _ from 'lodash';
           ])
         ])
       ]),
-
       transition(":leave", [
         style({ height: "*", overflow: "hidden" }),
         query(".menu-node-button", [style({ opacity: 1, transform: "none" })]),
@@ -159,6 +157,7 @@ export class SidenavComponent implements OnInit {
   controller = {};
   selectedNode = undefined;
   highlightedParent: any;
+  isExpand: boolean = true;
   user?: User | null;
   profileText: string;
   companyText: string;
@@ -205,8 +204,12 @@ export class SidenavComponent implements OnInit {
       parents.forEach(key => {
         if (this.controller[key]) {
           this.controller[key].isActive = true;
+          if (this.isExpand) {
+            this.controller[key].isExpand = true;
+          }
         }
       });
+      this.isExpand = false;
       this.setTitleByCondition(this.selectedNode.name);
     }
   }
@@ -307,7 +310,8 @@ export class SidenavComponent implements OnInit {
   }
   isSelected(node: any) {
     this.selectedNode = null;
-    let isSelected: boolean = node === this.selectedNode || this.router.url.indexOf(node?.route) !== -1;
+    let regex = new RegExp('\\b' + node?.route + '\\b');
+    let isSelected: boolean = node === this.selectedNode || this.router.url.search(regex) !== -1;
     if (isSelected) {
       this.selectedNode = node;
     }
@@ -347,7 +351,8 @@ export class SidenavComponent implements OnInit {
 
   findMenuItemByRoute(menu: any, targetRoute: string) {
     for (const item of menu) {
-      if (targetRoute.indexOf(item.route) !== -1) {
+      let regex = new RegExp('\\b' + item.route + '\\b');
+      if (targetRoute.search(regex) !== -1) {
         return item;
       }
       if (item.children) {

@@ -6,20 +6,27 @@ import { DaybookService } from '../daybook.service';
 import { MsService } from 'src/app/_services/master.service';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
+import { BaseComponent } from 'src/app/_components/base.component';
 
-@Component({ templateUrl: 'add_edit.component.html' })
-export class AddEditComponent implements OnInit, OnDestroy {
+@Component({ templateUrl: 'add-edit.component.html' })
+export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy {
     form!: FormGroup;
     id?: string;
     title!: string;
     loading = false;
-    submitting = false;
     submitted = false;
     documentType: string;
     msPaymentMethod: any = [];
     msDocument: any = [];
     msSupplier: any = [];
     msCustomer: any = [];
+    daybookDetails: any = [];
+
+    cols?: any = [
+        { field: 'name', header: 'Name' },
+        { field: 'type', header: 'Type' },
+        { field: 'amount', header: 'Amount', type: 'number' },
+    ];
 
     @ViewChild('docSelect', { static: true }) docSelect: MatSelect;
     @ViewChild('supplierSelect', { static: true }) supplierSelect: MatSelect;
@@ -48,9 +55,12 @@ export class AddEditComponent implements OnInit, OnDestroy {
         private daybookService: DaybookService,
         private alertService: AlertService,
         private msService: MsService
-    ) { }
+    ) {
+        super()
+    }
 
     async ngOnInit() {
+        this.loading = true;
         await Promise.all([
             this.getMsPaymentMethod(),
             this.getMsDocument(),
@@ -65,8 +75,8 @@ export class AddEditComponent implements OnInit, OnDestroy {
             invoice: ['', Validators.required],
             document: ['', Validators.required],
             transactionDate: ['', Validators.required],
-            supplier: ['', Validators.required],
-            customer: ['', Validators.required],
+            supplier: [''],
+            customer: [''],
             paymentMethod: ['', Validators.required],
         });
 
@@ -74,20 +84,21 @@ export class AddEditComponent implements OnInit, OnDestroy {
         if (this.id) {
             // edit mode
             this.title = 'Edit สมุดรายวัน';
-            this.loading = true;
             const user = await this.daybookService.getById(this.id)
             user.transactionDate = user.transactionDate ? new Date(user.transactionDate) : new Date()
+            if (user.daybookDetails) {
+                this.daybookDetails = [];
+                for (const detail of user.daybookDetails) {
+                    detail.amount = this.formatPrice(detail.amount)
+                    this.daybookDetails.push(detail)
+                }
+            }
             this.form.patchValue(user);
-            this.loading = false;
         }
 
-        if (this.form.value.document) {
-            var res = this.msDocument.find(ms => ms.id == this.form.value.document);
-            if (res && res.code) {
-                this.documentType = res.code;
-            }
-        }
+        this.setDocumentType(this.form.value.document)
         this.initFilter()
+        this.loading = false;
     }
 
     ngOnDestroy() {
@@ -96,47 +107,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
     }
 
     initFilter() {
-        // set initial selection
-        this.docFilterCtrl.setValue(this.msDocument[10]);
-        this.supplierFilterCtrl.setValue(this.msSupplier[10]);
-        this.customerFilterCtrl.setValue(this.msCustomer[10]);
-        this.paymentMethodFilterCtrl.setValue(this.msPaymentMethod[10]);
-
-        // load the initial bank list
-        this.filteredDocs.next(this.msDocument.slice());
-        this.filteredSuppliers.next(this.msSupplier.slice());
-        this.filteredCustomers.next(this.msCustomer.slice());
-        this.filteredPaymentMethods.next(this.msPaymentMethod.slice());
-
-        // listen for search field value changes
-        this.docFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDocs();
-            });
-        this.supplierFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDocs();
-            });
-        this.customerFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDocs();
-            });
-        this.paymentMethodFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDocs();
-            });
-
-        // set initial selection
-        this.docFilterCtrl.setValue(this.msDocument[10]);
-        this.supplierFilterCtrl.setValue(this.msSupplier[10]);
-        this.customerFilterCtrl.setValue(this.msCustomer[10]);
-        this.paymentMethodFilterCtrl.setValue(this.msPaymentMethod[10]);
-
-        // load the initial bank list
+        // load the initial list
         this.filteredDocs.next(this.msDocument.slice());
         this.filteredSuppliers.next(this.msSupplier.slice());
         this.filteredCustomers.next(this.msCustomer.slice());
@@ -153,6 +124,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.filterSuppliers();
             });
+
         this.customerFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
@@ -163,6 +135,26 @@ export class AddEditComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.filterPaymentMethods();
             });
+    }
+
+    async setDocumentType(document) {
+        if (document) {
+            var res = this.msDocument.find(ms => ms.id == this.form.value.document);
+            if (res && res.code) {
+                this.documentType = res.code;
+            }
+            switch (this.documentType) {
+                case 'PAY':
+                    this.form.controls['customer'].clearValidators()
+                    this.form.controls['supplier'].setValidators(Validators.required)
+                    break;
+
+                case 'REC':
+                    this.form.controls['supplier'].clearValidators()
+                    this.form.controls['customer'].setValidators(Validators.required)
+                    break;
+            }
+        }
     }
 
     protected filterDocs() {
@@ -257,8 +249,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
     get f() { return this.form.controls; }
 
     async onSubmit() {
-        this.submitted = true;
-
+        this.submitted = true
         // reset alerts on submit
         this.alertService.clear();
 
@@ -266,8 +257,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
         if (this.form.invalid) {
             return;
         }
-
-        this.submitting = true;
         try {
             var res = await this.save();
             if (res) {
@@ -276,7 +265,8 @@ export class AddEditComponent implements OnInit, OnDestroy {
             }
         } catch (error) {
             this.alertService.error(error);
-            this.submitting = false;
+        } finally {
+            this.submitted = false
         }
     }
 
@@ -285,5 +275,10 @@ export class AddEditComponent implements OnInit, OnDestroy {
         return this.id
             ? this.daybookService.update(this.id!, this.form.value)
             : this.daybookService.add(this.form.value);
+    }
+
+    deleteDaybookDetail(id: string) {
+        // const account = this.daybookDet!.find(x => x.id === id);
+        // account.isDeleting = true;
     }
 }

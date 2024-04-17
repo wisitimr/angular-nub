@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListComponent } from './list/list.component';
-import { AddEditComponent } from './add_edit/add_edit.component';
+import { AddEditComponent } from './add-edit/add-edit.component';
 
 const routes: Routes = [
     { path: '', component: ListComponent },

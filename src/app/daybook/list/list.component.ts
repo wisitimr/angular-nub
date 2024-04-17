@@ -10,7 +10,7 @@ export class ListComponent implements OnInit {
         { field: 'number', header: 'Number' },
         { field: 'invoice', header: 'Invoice' },
         { field: 'document.name', header: 'Document' },
-        { field: 'transactionDate', header: 'Transaction Date', date: 'dd/MM/yyyy' },
+        { field: 'transactionDate', header: 'TransactionDate', date: 'dd/MM/yyyy' },
     ];
     
     @ViewChild('dt') table: Table;
