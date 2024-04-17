@@ -5,6 +5,9 @@ import { AddEditComponent } from './add-edit/add-edit.component';
 import { SharedModule } from '../shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DaybookService } from './daybook.service';
+import { DaybookDetailService } from './detail/detail.service';
+import { DetailAddEditComponent } from './detail/add-edit/add-edit.component';
 
 @NgModule({
     imports: [
@@ -14,8 +17,10 @@ import { CommonModule } from '@angular/common';
         DaybookRoutingModule,
     ],
     declarations: [
-        ListComponent, 
+        ListComponent,
         AddEditComponent,
-    ]
+        DetailAddEditComponent
+    ],
+    providers: [DaybookService, DaybookDetailService]
 })
 export class DaybookModule { }

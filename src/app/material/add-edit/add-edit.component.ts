@@ -38,8 +38,8 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         if (this.id) {
             // edit mode
             this.title = 'Edit Material';
-            const user = await this.materialService.getById(this.id)
-            this.form.patchValue(user);
+            const material = await this.materialService.getById(this.id)
+            this.form.patchValue(material);
         }
         this.loading = false;
     }

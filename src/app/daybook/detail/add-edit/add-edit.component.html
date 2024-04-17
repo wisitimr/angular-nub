@@ -37,12 +37,7 @@
                         </label>
                         <mat-form-field appearance="fill">
                             <mat-select formControlName="type" placeholder="Type" #paymentTypeSelect>
-                                <mat-option>
-                                    <ngx-mat-select-search placeholderLabel="Search"
-                                        noEntriesFoundLabel="No matching found"
-                                        [formControl]="paymentTypeFilterCtrl"></ngx-mat-select-search>
-                                </mat-option>
-                                <mat-option *ngFor="let e of filteredPaymentTypes | async" [value]="e">
+                                <mat-option *ngFor="let e of paymentTypes" [value]="e">
                                     {{e}}
                                 </mat-option>
                             </mat-select>
@@ -65,31 +60,34 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="form-label">
-                        <b>Account</b>
-                        <span class="text-danger">*</span>
-                    </label>
-                    <mat-form-field appearance="fill">
-                        <mat-select formControlName="account" placeholder="Account" #accountSelect>
-                            <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="No matching found"
-                                    [formControl]="accountFilterCtrl"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let e of filteredAccounts | async" [value]="e.id">
-                                {{e.name}}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="form.controls['account']?.errors">
-                            <strong>Account is required</strong>
-                        </mat-error>
-                    </mat-form-field>
+                    <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Account</b>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="account" placeholder="Account" #accountSelect>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholderLabel="Search"
+                                        noEntriesFoundLabel="No matching found"
+                                        [formControl]="accountFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredAccounts | async" [value]="e.id">
+                                    {{e.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="form.controls['account']?.errors">
+                                <strong>Account is required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div class="mt-3">
                     <button [disabled]="!isPassValidation(form)" class="btn btn-primary">
                         <span *ngIf="submitted" class="spinner-border spinner-border-sm me-1"></span>
                         Save
                     </button>
-                    <a routerLink="/daybook" class="btn btn-link">Cancel</a>
+                    <a routerLink="/daybook/edit/{{daybook}}" class="btn btn-link">Cancel</a>
                 </div>
             </form>
             <div *ngIf="loading" class="text-center m-5">

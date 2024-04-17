@@ -41,8 +41,8 @@ export class AddEditComponent extends BaseComponent implements OnInit {
             // edit mode
             this.title = 'Edit Customer';
             this.loading = true;
-            const user = await this.customerService.getById(this.id)
-            this.form.patchValue(user);
+            const customer = await this.customerService.getById(this.id)
+            this.form.patchValue(customer);
             this.loading = false;
         }
     }

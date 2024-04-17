@@ -152,15 +152,6 @@
                         [showCurrentPageReport]="true" [loading]="loading" [paginator]="true"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                         styleClass="p-datatable-account p-datatable-gridlines">
-                        <!-- <ng-template pTemplate="caption">
-                            <div class="flex">
-                                <span class="p-input-icon-left ml-auto">
-                                    <i class="pi pi-search"></i>
-                                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                        placeholder="Search" />
-                                </span>
-                            </div>
-                        </ng-template> -->
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th *ngFor="let col of columns" [pSortableColumn]="col.field" style="min-width: 14rem">
@@ -174,20 +165,18 @@
                                 <th class="text-center">...</th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-material let-columns="columns">
+                        <ng-template pTemplate="body" let-detail let-columns="columns">
                             <tr>
                                 <td *ngFor="let col of columns" [ngClass]="{'text-right': col.type == 'number'}">
-                                    {{material[col.field]}}
+                                    {{detail[col.field]}}
                                 </td>
                                 <td style="white-space: nowrap">
-                                    <a routerLink="detail/edit/{{material.id}}"
+                                    <a routerLink="detail/edit/{{detail.id}}"
                                         class="btn btn-sm btn-primary me-1">Edit</a>
-                                    <button (click)="deleteDaybookDetail(material.id)"
-                                        class="btn btn-sm btn-danger btn-delete-material"
-                                        [disabled]="material.isDeleting">
-                                        <span *ngIf="material.isDeleting"
-                                            class="spinner-border spinner-border-sm"></span>
-                                        <span *ngIf="!material.isDeleting">Delete</span>
+                                    <button (click)="deleteDaybookDetail(detail.id)"
+                                        class="btn btn-sm btn-danger btn-delete-detail" [disabled]="detail.isDeleting">
+                                        <span *ngIf="detail.isDeleting" class="spinner-border spinner-border-sm"></span>
+                                        <span *ngIf="!detail.isDeleting">Delete</span>
                                     </button>
                                 </td>
                             </tr>

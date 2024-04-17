@@ -84,16 +84,16 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         if (this.id) {
             // edit mode
             this.title = 'Edit สมุดรายวัน';
-            const user = await this.daybookService.getById(this.id)
-            user.transactionDate = user.transactionDate ? new Date(user.transactionDate) : new Date()
-            if (user.daybookDetails) {
+            const daybook = await this.daybookService.getById(this.id)
+            daybook.transactionDate = daybook.transactionDate ? new Date(daybook.transactionDate) : new Date()
+            if (daybook.daybookDetails) {
                 this.daybookDetails = [];
-                for (const detail of user.daybookDetails) {
+                for (const detail of daybook.daybookDetails) {
                     detail.amount = this.formatPrice(detail.amount)
                     this.daybookDetails.push(detail)
                 }
             }
-            this.form.patchValue(user);
+            this.form.patchValue(daybook);
         }
 
         this.setDocumentType(this.form.value.document)
