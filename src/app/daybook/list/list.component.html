@@ -37,9 +37,6 @@
                     <ng-container *ngIf="!col.date">
                         {{getValue(daybook, col.field)}}
                     </ng-container>
-                    <ng-container *ngIf="col.date">
-                        {{getValue(daybook, col.field) | date: col.date}}
-                    </ng-container>
                 </td>
                 <td style="white-space: nowrap">
                     <a routerLink="edit/{{daybook.id}}" class="btn btn-sm btn-primary me-1">Edit</a>

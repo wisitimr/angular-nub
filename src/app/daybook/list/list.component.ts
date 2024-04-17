@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { DaybookService } from '../daybook.service';
+import * as moment from 'moment';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
@@ -10,7 +11,7 @@ export class ListComponent implements OnInit {
         { field: 'number', header: 'Number' },
         { field: 'invoice', header: 'Invoice' },
         { field: 'document.name', header: 'Document' },
-        { field: 'transactionDate', header: 'TransactionDate', date: 'dd/MM/yyyy' },
+        { field: 'transactionDate', header: 'TransactionDate' },
     ];
     
     @ViewChild('dt') table: Table;
@@ -21,6 +22,9 @@ export class ListComponent implements OnInit {
 
     async ngOnInit() {
         this.daybooks = await this.daybookService.getAll();
+        for (const iterator of this.daybooks) {
+            iterator.transactionDate = moment(iterator.transactionDate).format('DD/MM/YYYY')
+        }
         this.loading = false;
     }
 
