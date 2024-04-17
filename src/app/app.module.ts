@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { AlertComponent, SidenavComponent } from './_components';
 import { MatIconModule } from '@angular/material/icon';
 import { TopnavComponent } from './_components/topnav/topnav.component';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { NativeDateAdapter } from '@angular/material/core';
 
 @NgModule({
     imports: [
@@ -29,6 +31,8 @@ import { TopnavComponent } from './_components/topnav/topnav.component';
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        BsDatepickerConfig,
+        NativeDateAdapter
     ],
     bootstrap: [AppComponent]
 })

@@ -41,4 +41,13 @@ export class AccountService {
     async delete(id: string) {
         return await lastValueFrom(this.http.delete(`${environment.apiUrl}/account/${id}`))
     }
+
+    async getAccountType() {
+        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/accountType`));
+        if (res && res.data) {
+            return res.data;
+        } else {
+            return [];
+        }
+    }
 }

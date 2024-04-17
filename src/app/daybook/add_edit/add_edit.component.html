@@ -6,45 +6,102 @@
                 <div class="row">
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Code</b>
+                            <b>Number</b>
                         </label>
-                        <input type="text" formControlName="code" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && f.code.errors }" />
-                        <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
-                            <div *ngIf="f.code.errors.required">Code is required</div>
-                        </div>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="number" placeholder="Number" required />
+                        </mat-form-field>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Name</b>
+                            <b>Invoice</b>
                         </label>
-                        <input type="text" formControlName="name" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
-                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                            <div *ngIf="f.name.errors.required">Name is required</div>
-                        </div>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="invoice" placeholder="Invoice" required />
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Address</b>
+                            <b>Transaction Date</b>
                         </label>
-                        <input type="text" formControlName="address" class="form-control" />
+                        <p>
+                            <mat-form-field appearance="fill">
+                                <input matInput formControlName="transactionDate" placeholder="Transaction Date"
+                                    [matDatepicker]="picker">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </p>
                     </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Phone</b>
+                            <b>Document</b>
                         </label>
-                        <input type="text" formControlName="phone" class="form-control" />
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="document" placeholder="Document" #docSelect>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholder="Document" placeholderLabel="Search"
+                                        [formControl]="docFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredDocs | async" [value]="e.id">
+                                    {{e.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
+                    <div *ngIf="documentType === 'PAY'" class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Supplier</b>
+                        </label>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="supplier" placeholder="Supplier" #supplierSelect>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholder="Supplier" placeholderLabel="Search"
+                                        [formControl]="supplierFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredSuppliers | async" [value]="e.id">
+                                    {{e.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="documentType === 'REC'" class="mb-3 col-lg-6 col-md-12 col-sm-12">
+                        <label class="form-label">
+                            <b>Customer</b>
+                        </label>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="customer" placeholder="Customer" #customerSelect>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholder="Customer" placeholderLabel="Search"
+                                        [formControl]="customerFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredCustomers | async" [value]="e.id">
+                                    {{e.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="mb-3 col-lg-6 col-md-12 col-sm-12">
                         <label class="form-label">
-                            <b>Contact</b>
+                            <b>Payment Method</b>
                         </label>
-                        <input type="text" formControlName="contact" class="form-control" />
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="paymentMethod" placeholder="PaymentMethod"
+                                #paymentMethodSelect>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholder="PaymentMethod" placeholderLabel="Search"
+                                        [formControl]="paymentMethodFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredPaymentMethods | async" [value]="e.id">
+                                    {{e.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="mt-3">
