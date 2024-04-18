@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first, takeUntil } from 'rxjs/operators';
-import { AlertService } from 'src/app/_components/alert/alert.service';
 import { AccountService } from '../account.service';
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { BaseComponent } from 'src/app/_components/base.component';
+import { NotyService } from 'src/app/_services/noty.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit {
@@ -33,7 +33,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        private alertService: AlertService
+        private noty: NotyService
     ) {
         super()
     }
@@ -102,8 +102,6 @@ export class AddEditComponent extends BaseComponent implements OnInit {
 
     async onSubmit() {
         this.submitted = true
-        // reset alerts on submit
-        this.alertService.clear();
 
         // stop here if form is invalid
         if (this.form.invalid) {
@@ -112,11 +110,11 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         try {
             var res = await this.save();
             if (res) {
-                this.alertService.success('Account saved', { keepAfterRouteChange: true });
+                this.noty.success('Account saved');
                 this.router.navigateByUrl('/account');
             }
         } catch (error) {
-            this.alertService.error(error);
+            this.noty.error(error);
         } finally {
             this.submitted = false
         }

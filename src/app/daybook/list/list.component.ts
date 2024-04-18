@@ -4,11 +4,12 @@ import { DaybookService } from '../daybook.service';
 import * as moment from 'moment';
 import { FileService } from 'src/app/_services/file.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NotyService } from 'src/app/_services/noty.service';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     daybooks?: any[];
-    loading: boolean = true;
+    loading: boolean = false;
     isDeleting: boolean = false;
     isDownloading: boolean = false;
     cols?: any = [
@@ -24,16 +25,27 @@ export class ListComponent implements OnInit {
         private daybookService: DaybookService,
         private fileService: FileService,
         private authService: AuthService,
+        private noty: NotyService
     ) { }
 
     async ngOnInit() {
-        this.daybooks = await this.daybookService.getAll({
-            company: this.authService.userValue && this.authService.userValue.company && this.authService.userValue.company.id
-        });
-        for (const iterator of this.daybooks) {
-            iterator.transactionDate = moment(iterator.transactionDate).format('DD/MM/YYYY')
+        window.scrollTo(0, 0);
+        this.search()
+    }
+
+    async search() {
+        try {
+            this.daybooks = await this.daybookService.getAll({
+                company: this.authService.userValue && this.authService.userValue.company && this.authService.userValue.company.id
+            });
+            for (const iterator of this.daybooks) {
+                iterator.transactionDate = moment(iterator.transactionDate).format('DD/MM/YYYY')
+            }
+        } catch (error) {
+            this.noty.error(error)
+        } finally {
+            this.loading = false;
         }
-        this.loading = false;
     }
 
     async downloadDaybook(row: any) {

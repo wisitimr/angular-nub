@@ -6,7 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
-import { AlertComponent, SidenavComponent } from './_components';
+import { SidenavComponent } from './_components';
 import { MatIconModule } from '@angular/material/icon';
 import { TopnavComponent } from './_components/topnav/topnav.component';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -24,7 +24,6 @@ import { FileService } from './_services/file.service';
         MatIconModule,
     ],
     declarations: [
-        AlertComponent,
         AppComponent,
         SidenavComponent,
         TopnavComponent,

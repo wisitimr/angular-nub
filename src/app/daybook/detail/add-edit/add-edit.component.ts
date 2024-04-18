@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'src/app/_components/alert/alert.service';
-import { MsService } from 'src/app/_services/master.service';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { BaseComponent } from 'src/app/_components/base.component';
 import { AccountService } from 'src/app/account/account.service';
 import { DaybookDetailService } from '../detail.service';
+import { NotyService } from 'src/app/_services/noty.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class DetailAddEditComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -40,13 +39,14 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
         private route: ActivatedRoute,
         private router: Router,
         private daybookDetailService: DaybookDetailService,
-        private alertService: AlertService,
+        private noty: NotyService,
         private accountService: AccountService,
     ) {
         super()
     }
 
     async ngOnInit() {
+        window.scrollTo(0, 0);
         this.loading = true;
         await this.getAccount();
         this.id = this.route.snapshot.params['detailId'];
@@ -143,8 +143,6 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
 
     async onSubmit() {
         this.submitted = true
-        // reset alerts on submit
-        this.alertService.clear();
 
         // stop here if form is invalid
         if (this.form.invalid) {
@@ -153,11 +151,11 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
         try {
             var res = await this.save();
             if (res) {
-                this.alertService.success('DaybookDetail saved', { keepAfterRouteChange: true });
+                this.noty.success('DaybookDetail saved');
                 this.router.navigateByUrl('/daybook');
             }
         } catch (error) {
-            this.alertService.error(error);
+            this.noty.error(error);
         } finally {
             this.submitted = false
         }

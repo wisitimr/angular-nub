@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'src/app/_components/alert/alert.service';
 import { DaybookService } from '../daybook.service';
 import { MsService } from 'src/app/_services/master.service';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { BaseComponent } from 'src/app/_components/base.component';
+import { NotyService } from 'src/app/_services/noty.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -53,13 +53,14 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         private route: ActivatedRoute,
         private router: Router,
         private daybookService: DaybookService,
-        private alertService: AlertService,
+        private noty: NotyService,
         private msService: MsService
     ) {
         super()
     }
 
     async ngOnInit() {
+        window.scrollTo(0, 0);
         this.loading = true;
         await Promise.all([
             this.getMsPaymentMethod(),
@@ -250,8 +251,6 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
 
     async onSubmit() {
         this.submitted = true
-        // reset alerts on submit
-        this.alertService.clear();
 
         // stop here if form is invalid
         if (this.form.invalid) {
@@ -260,11 +259,11 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         try {
             var res = await this.save();
             if (res) {
-                this.alertService.success('Daybook saved', { keepAfterRouteChange: true });
+                this.noty.success('Daybook saved');
                 this.router.navigateByUrl('/daybook');
             }
         } catch (error) {
-            this.alertService.error(error);
+            this.noty.error(error);
         } finally {
             this.submitted = false
         }

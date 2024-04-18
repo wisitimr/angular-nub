@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'src/app/_components/alert/alert.service';
+import { NotyService } from 'src/app/_services/noty.service';
 import { MaterialService } from '../material.service';
 import { BaseComponent } from 'src/app/_components/base.component';
 
@@ -18,7 +18,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private materialService: MaterialService,
-        private alertService: AlertService
+        private noty: NotyService
     ) {
         super()
      }
@@ -50,9 +50,6 @@ export class AddEditComponent extends BaseComponent implements OnInit {
     async onSubmit() {
         this.submitted = true;
 
-        // reset alerts on submit
-        this.alertService.clear();
-
         // stop here if form is invalid
         if (this.form.invalid) {
             return;
@@ -60,11 +57,11 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         try {
             var res = await this.save();
             if (res) {
-                this.alertService.success('Material saved', { keepAfterRouteChange: true });
+                this.noty.success('Material saved');
                 this.router.navigateByUrl('/material');
             }
         } catch (error) {
-            this.alertService.error(error);
+            this.noty.error(error);
         } finally {
             this.submitted = false
         }

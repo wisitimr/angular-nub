@@ -3,9 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { UserService } from 'src/app/user/user.service';
-import { AlertService } from 'src/app/_components/alert/alert.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BaseComponent } from 'src/app/_components/base.component';
+import { NotyService } from 'src/app/_services/noty.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit {
@@ -22,7 +22,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         private router: Router,
         private userService: UserService,
         private authService: AuthService,
-        private alertService: AlertService
+        private noty: NotyService
     ) {
         super()
     }
@@ -63,9 +63,6 @@ export class AddEditComponent extends BaseComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
-        // reset alerts on submit
-        this.alertService.clear();
-
         // stop here if form is invalid
         if (this.form.invalid) {
             return;
@@ -75,11 +72,11 @@ export class AddEditComponent extends BaseComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('User saved', { keepAfterRouteChange: true });
+                    this.noty.success('User saved');
                     this.router.navigateByUrl('/user');
                 },
                 error: error => {
-                    this.alertService.error(error);
+                    this.noty.error(error);
                     this.submitting = false;
                 }
             })

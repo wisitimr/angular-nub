@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { AlertService } from 'src/app/_components/alert/alert.service';
+import { NotyService } from 'src/app/_services/noty.service';
 import { AppComponent } from 'src/app/app.component';
 import * as _ from 'lodash';
 import { User } from 'src/app/_models';
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private alertService: AlertService,
+        private noty: NotyService,
         private app: AppComponent
     ) { }
 
@@ -45,9 +45,6 @@ export class LoginComponent implements OnInit {
 
     async onSubmit() {
         this.isSubmitted = true;
-
-        // reset alerts on submit
-        this.alertService.clear();
 
         // stop here if form is invalid
         if (this.form.invalid) {
@@ -70,7 +67,7 @@ export class LoginComponent implements OnInit {
                 this.loginSucceeded(this.user.data)
             }
         } catch (error) { 
-            this.alertService.error(error);
+            this.noty.error(error);
             this.loading = false;
         }
     }
