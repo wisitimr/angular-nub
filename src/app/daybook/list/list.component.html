@@ -1,21 +1,10 @@
 <div class="content">
     <h1>สมุดรายวัน</h1>
-    <div class="row pl-1 pr-1 pt-2">
-        <div class="col-3">
-            <form *ngIf="!loading" [formGroup]="searchForm">
-                <select class="form-select" formControlName="year" placeholder="Year" (change)="search()">
-                    <option *ngFor="let year of years" [value]="year">
-                        {{year}}
-                    </option>
-                </select>
-            </form>
-        </div>
-        <div class="col-9">
-            <button routerLink="add" class="btn btn-sm btn-success mb-2 ml-auto d-flex align-items-center">
-                <mat-icon>add</mat-icon>
-                Add
-            </button>
-        </div>
+    <div class="col-12 text-right">
+        <button routerLink="add" class="btn btn-sm btn-success mb-2 ml-auto d-flex align-items-center">
+            <mat-icon>add</mat-icon>
+            Add
+        </button>
     </div>
     <p-table #dt [columns]="cols" [value]="daybooks" dataKey="id" [rowHover]="true" [rows]="10"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
