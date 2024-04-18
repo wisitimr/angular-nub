@@ -14,7 +14,7 @@ export class ProductService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/product?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/product?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -23,7 +23,7 @@ export class ProductService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/product/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/product/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -32,14 +32,14 @@ export class ProductService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.apiUrl}/products/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/products/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.apiUrl}/products`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/products`, params));
     }
 
     async delete(id: string) {
-        return await lastValueFrom(this.http.delete(`${environment.apiUrl}/product/${id}`))
+        return await lastValueFrom(this.http.delete(`${environment.url}/product/${id}`))
     }
 }

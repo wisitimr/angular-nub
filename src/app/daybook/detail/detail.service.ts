@@ -14,7 +14,7 @@ export class DaybookDetailService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/daybook/detail?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook/detail?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -23,7 +23,7 @@ export class DaybookDetailService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/daybook/detail/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook/detail/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -32,14 +32,14 @@ export class DaybookDetailService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.apiUrl}/daybook/detail/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/daybook/detail/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.apiUrl}/daybook/detail`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/daybook/detail`, params));
     }
 
     async delete(id: string) {
-        return await lastValueFrom(this.http.delete(`${environment.apiUrl}/daybook/detail/${id}`))
+        return await lastValueFrom(this.http.delete(`${environment.url}/daybook/detail/${id}`))
     }
 }

@@ -6,6 +6,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:dev": "ng build --configuration='dev'",
+    "build:uat": "ng build --configuration='uat'",
+    "build:prd": "ng build --configuration='prd'",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

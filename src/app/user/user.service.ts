@@ -15,7 +15,7 @@ export class UserService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/user`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/user`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -24,7 +24,7 @@ export class UserService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/user/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/user/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -33,7 +33,7 @@ export class UserService {
     }
 
     update(id: string, params: any) {
-        return this.http.put(`${environment.apiUrl}/user/${id}`, params)
+        return this.http.put(`${environment.url}/user/${id}`, params)
             .pipe(map(x => {
                 // update stored user if the logged in user updated their own record
                 if (id == this.authService.userValue?.id) {
@@ -49,7 +49,7 @@ export class UserService {
     }
 
     delete(id: string) {
-        return this.http.delete(`${environment.apiUrl}/user/${id}`)
+        return this.http.delete(`${environment.url}/user/${id}`)
             .pipe(map(x => {
                 // auto logout if the logged in user deleted their own record
                 if (id == this.authService.userValue?.id) {

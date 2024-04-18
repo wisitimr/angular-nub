@@ -14,7 +14,7 @@ export class MaterialService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/material?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/material?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -23,7 +23,7 @@ export class MaterialService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/material/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/material/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -32,14 +32,14 @@ export class MaterialService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.apiUrl}/materials/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/materials/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.apiUrl}/materials`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/materials`, params));
     }
 
     async delete(id: string) {
-        return await lastValueFrom(this.http.delete(`${environment.apiUrl}/material/${id}`))
+        return await lastValueFrom(this.http.delete(`${environment.url}/material/${id}`))
     }
 }

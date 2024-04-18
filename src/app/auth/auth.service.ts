@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     async login(username: string, password: string) {
-        return await lastValueFrom(this.http.post<any>(`${environment.apiUrl}/api/auth/login`, { username, password }));
+        return await lastValueFrom(this.http.post<any>(`${environment.url}/api/auth/login`, { username, password }));
     }
 
     logout() {
@@ -42,6 +42,6 @@ export class AuthService {
     }
 
     register(user: User) {
-        return this.http.post(`${environment.apiUrl}/user/register`, user);
+        return this.http.post(`${environment.url}/user/register`, user);
     }
 }
