@@ -37,7 +37,12 @@
                         </label>
                         <mat-form-field appearance="fill">
                             <mat-select formControlName="type" placeholder="Type" #paymentTypeSelect>
-                                <mat-option *ngFor="let e of paymentTypes" [value]="e">
+                                <mat-option>
+                                    <ngx-mat-select-search placeholderLabel="Search"
+                                        noEntriesFoundLabel="No matching found"
+                                        [formControl]="paymentTypeFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let e of filteredPaymentTypes | async" [value]="e">
                                     {{e}}
                                 </mat-option>
                             </mat-select>
@@ -73,7 +78,7 @@
                                         [formControl]="accountFilterCtrl"></ngx-mat-select-search>
                                 </mat-option>
                                 <mat-option *ngFor="let e of filteredAccounts | async" [value]="e.id">
-                                    {{e.name}}
+                                    {{e.code}} - {{e.name}}
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="form.controls['account']?.errors">

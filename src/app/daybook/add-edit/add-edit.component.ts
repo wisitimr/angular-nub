@@ -189,7 +189,7 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         }
         // filter the banks
         this.filteredSuppliers.next(
-            this.msSupplier.filter(supplier => supplier.name.toLowerCase().indexOf(search) > -1)
+            this.msSupplier.filter(supplier => supplier.code.toLowerCase().indexOf(search) > -1 || supplier.name.toLowerCase().indexOf(search) > -1)
         );
     }
 
@@ -207,7 +207,7 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         }
         // filter the banks
         this.filteredCustomers.next(
-            this.msCustomer.filter(customer => customer.name.toLowerCase().indexOf(search) > -1)
+            this.msCustomer.filter(customer => customer.code.toLowerCase().indexOf(search) > -1 || customer.name.toLowerCase().indexOf(search) > -1)
         );
     }
 

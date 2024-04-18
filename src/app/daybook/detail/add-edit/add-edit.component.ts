@@ -22,12 +22,15 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
     backUrl = '';
 
     @ViewChild('accountSelect', { static: true }) accountSelect: MatSelect;
+    @ViewChild('paymentTypeSelect', { static: true }) paymentTypeSelect: MatSelect;
 
     /** control for the MatSelect filter keyword */
     public accountFilterCtrl: FormControl<string> = new FormControl<string>('');
+    public paymentTypeFilterCtrl: FormControl<string> = new FormControl<string>('');
 
     /** list of banks filtered by search keyword */
     public filteredAccounts: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+    public filteredPaymentTypes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
     /** Subject that emits when the component has been destroyed. */
     protected _onDestroy = new Subject<void>();
@@ -44,40 +47,32 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
     }
 
     async ngOnInit() {
+        this.loading = true;
+        await this.getAccount();
+        this.id = this.route.snapshot.params['detailId'];
+        this.daybook = this.route.snapshot.params['id'];
 
-        try {
-            this.loading = true;
-            await this.getAccount();
-            this.id = this.route.snapshot.params['detailId'];
-            this.daybook = this.route.snapshot.params['id'];
+        // form with validation rules
+        this.form = this.formBuilder.group({
+            id: [''],
+            name: ['', Validators.required],
+            detail: ['', Validators.required],
+            type: ['', Validators.required],
+            amount: ['', Validators.required],
+            account: ['', Validators.required],
+            daybook: ['', Validators.required],
+            company: ['', Validators.required],
+        });
 
-            // form with validation rules
-            this.form = this.formBuilder.group({
-                id: [''],
-                name: ['', Validators.required],
-                detail: ['', Validators.required],
-                type: ['', Validators.required],
-                amount: ['', Validators.required],
-                account: ['', Validators.required],
-                daybook: ['', Validators.required],
-                company: ['', Validators.required],
-            });
-
-            this.title = 'Add สมุดรายวัน';
-            if (this.id) {
-                // edit mode
-                this.title = 'Edit สมุดรายวัน';
-                const daybookDetail = await this.daybookDetailService.getById(this.id)
-                console.log(daybookDetail);
-
-                this.form.patchValue(daybookDetail);
-            }
-            this.initFilter()
-            this.loading = false;
-        } catch (error) {
-            console.log(error);
-
+        this.title = 'Add สมุดรายวัน';
+        if (this.id) {
+            // edit mode
+            this.title = 'Edit สมุดรายวัน';
+            const daybookDetail = await this.daybookDetailService.getById(this.id)
+            this.form.patchValue(daybookDetail);
         }
+        this.initFilter()
+        this.loading = false;
     }
 
     ngOnDestroy() {
@@ -88,12 +83,18 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
     initFilter() {
         // load the initial list
         this.filteredAccounts.next(this.accounts.slice());
+        this.filteredPaymentTypes.next(this.paymentTypes.slice());
 
         // listen for search field value changes
         this.accountFilterCtrl.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
                 this.filterAccounts();
+            });
+        this.paymentTypeFilterCtrl.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+                this.filterPaymentTypes();
             });
     }
 
@@ -111,7 +112,25 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
         }
         // filter the banks
         this.filteredAccounts.next(
-            this.accounts.filter(account => account.name.toLowerCase().indexOf(search) > -1)
+            this.accounts.filter(account => account.code.toLowerCase().indexOf(search) > -1 || account.name.toLowerCase().indexOf(search) > -1)
+        );
+    }
+
+    protected filterPaymentTypes() {
+        if (!this.paymentTypes) {
+            return;
+        }
+        // get the search keyword
+        let search = this.paymentTypeFilterCtrl.value;
+        if (!search) {
+            this.filteredPaymentTypes.next(this.paymentTypes.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        // filter the banks
+        this.filteredPaymentTypes.next(
+            this.paymentTypes.filter(paymentType => paymentType.toLowerCase().indexOf(search) > -1)
         );
     }
 

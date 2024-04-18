@@ -85,7 +85,7 @@
                                         [formControl]="supplierFilterCtrl"></ngx-mat-select-search>
                                 </mat-option>
                                 <mat-option *ngFor="let e of filteredSuppliers | async" [value]="e.id">
-                                    {{e.name}}
+                                    {{e.code}} - {{e.name}}
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="documentType === 'PAY' && form.controls['supplier']?.errors">
@@ -106,7 +106,7 @@
                                         [formControl]="customerFilterCtrl"></ngx-mat-select-search>
                                 </mat-option>
                                 <mat-option *ngFor="let e of filteredCustomers | async" [value]="e.id">
-                                    {{e.name}}
+                                    {{e.code}} - {{e.name}}
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="documentType === 'REC' && form.controls['customer']?.errors">

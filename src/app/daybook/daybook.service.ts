@@ -10,11 +10,10 @@ import { AuthService } from '../auth/auth.service';
 export class DaybookService {
     constructor(
         private http: HttpClient,
-        private authService: AuthService,
     ) { }
 
-    async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/daybook?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+    async getAll(query: any) {
+        const res: Response = await lastValueFrom(this.http.get(`${environment.apiUrl}/api/daybook?${new URLSearchParams(query).toString()}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -29,6 +28,21 @@ export class DaybookService {
         } else {
             return null;
         }
+    }
+
+    async generateExcel(id: string) {
+        var res = await lastValueFrom(
+            this.http.get(`${environment.apiUrl}/api/report/generate/excel/${id}`, {
+                observe: 'response',
+                responseType: 'blob',
+            })
+        ),
+            result: any = [res.body];
+        const contentDispositionHeader = res.headers.get('Content-Disposition')
+        if (contentDispositionHeader) {
+            result.push(decodeURIComponent(contentDispositionHeader.split(';')[1].trim().split('=')[1]).replace("utf-8''", ""))
+        }
+        return result
     }
 
     async update(id: string, params: any) {
