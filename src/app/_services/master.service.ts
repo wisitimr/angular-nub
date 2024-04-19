@@ -11,7 +11,7 @@ export class MsService {
     ) { }
 
     async getPaymentMethod() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/payment/method`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/payment/method`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -20,7 +20,7 @@ export class MsService {
     }
 
     async getDocument() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/document`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/document`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -29,7 +29,7 @@ export class MsService {
     }
 
     async getSupplier() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/supplier`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/supplier`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -38,7 +38,7 @@ export class MsService {
     }
 
     async getCustomer() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/customer`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/customer`));
         if (res && res.data) {
             return res.data;
         } else {

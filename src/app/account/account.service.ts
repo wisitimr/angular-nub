@@ -13,7 +13,7 @@ export class AccountService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/account?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/account?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -22,7 +22,7 @@ export class AccountService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/account/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/account/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -31,11 +31,11 @@ export class AccountService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.url}/accounts/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/account/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.url}/accounts`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/account`, params));
     }
 
     async delete(id: string) {
@@ -43,7 +43,7 @@ export class AccountService {
     }
 
     async getAccountType() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/accountType`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/accountType`));
         if (res && res.data) {
             return res.data;
         } else {

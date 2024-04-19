@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotyService } from 'src/app/_services/noty.service';
 import { MaterialService } from '../material.service';
 import { BaseComponent } from 'src/app/_components/base.component';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit {
@@ -18,7 +19,8 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private materialService: MaterialService,
-        private noty: NotyService
+        private noty: NotyService,
+        private authService: AuthService,
     ) {
         super()
      }
@@ -32,6 +34,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
             code: ['', Validators.required],
             name: ['', Validators.required],
             description: ['', Validators.required],
+            company: [this.authService.userValue.company && this.authService.userValue.company.id, Validators.required]
         });
 
         this.title = 'Add Material';

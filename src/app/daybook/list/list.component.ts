@@ -56,9 +56,8 @@ export class ListComponent implements OnInit {
     }
 
     deleteDaybook(id: string) {
-        this.isDeleting = true;
-        const account = this.daybooks!.find(x => x.id === id);
-        this.isDeleting = false;
+        const daybook = this.daybooks!.find(x => x.id === id);
+        daybook.isDeleting = false;
     }
 
     getValue(data, field) {

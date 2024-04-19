@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     async login(username: string, password: string) {
-        return await lastValueFrom(this.http.post<any>(`${environment.url}/api/auth/login`, { username, password }));
+        return await lastValueFrom(this.http.post<any>(`${environment.url}/auth/login`, { username, password }));
     }
 
     logout() {

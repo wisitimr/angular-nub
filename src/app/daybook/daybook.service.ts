@@ -13,7 +13,7 @@ export class DaybookService {
     ) { }
 
     async getAll(query: any) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook?${new URLSearchParams(query).toString()}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/daybook?${new URLSearchParams(query).toString()}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -22,7 +22,7 @@ export class DaybookService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/daybook/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -32,7 +32,7 @@ export class DaybookService {
 
     async generateExcel(id: string) {
         var res = await lastValueFrom(
-            this.http.get(`${environment.url}/api/report/generate/excel/${id}`, {
+            this.http.get(`${environment.url}/report/generate/excel/${id}`, {
                 observe: 'response',
                 responseType: 'blob',
             })
@@ -46,14 +46,29 @@ export class DaybookService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.url}/daybook/${id}`, params));
+        const res: Response = await lastValueFrom(this.http.put(`${environment.url}/daybook/${id}`, params));
+        if (res && res.data) {
+            return res.data;
+        } else {
+            return null;
+        }
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.url}/daybook`, params));
+        const res: Response = await lastValueFrom(this.http.post(`${environment.url}/daybook`, params));
+        if (res && res.data) {
+            return res.data;
+        } else {
+            return null;
+        }
     }
 
     async delete(id: string) {
-        return await lastValueFrom(this.http.delete(`${environment.url}/daybook/${id}`))
+        const res: Response = await lastValueFrom(this.http.delete(`${environment.url}/daybook/${id}`))
+        if (res && res.data) {
+            return res.data;
+        } else {
+            return null;
+        }
     }
 }

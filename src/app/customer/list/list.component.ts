@@ -17,6 +17,7 @@ export class ListComponent implements OnInit {
     ) { }
 
     async ngOnInit() {
+        window.scrollTo(0, 0);
         this.customers = await this.customerService.getAll();
         this.loading = false;
     }

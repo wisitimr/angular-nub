@@ -14,7 +14,7 @@ export class DaybookDetailService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook/detail?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/daybook/detail?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -23,7 +23,7 @@ export class DaybookDetailService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/daybook/detail/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/daybook/detail/${id}`));
         if (res && res.data) {
             return res.data;
         } else {

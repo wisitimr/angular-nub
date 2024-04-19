@@ -36,8 +36,9 @@
                         Download
                     </button>
                     <a routerLink="edit/{{daybook.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
-                    <button (click)="deleteDaybook(daybook.id)" class="btn btn-sm btn-danger" [disabled]="isDeleting">
-                        <span *ngIf="isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <button (click)="deleteDaybook(daybook.id)" class="btn btn-sm btn-danger"
+                        [disabled]="daybook.isDeleting">
+                        <span *ngIf="daybook.isDeleting" class="spinner-border spinner-border-sm"></span>
                         Delete
                     </button>
                 </td>

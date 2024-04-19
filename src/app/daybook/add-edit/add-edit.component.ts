@@ -7,6 +7,7 @@ import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { BaseComponent } from 'src/app/_components/base.component';
 import { NotyService } from 'src/app/_services/noty.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -54,7 +55,8 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
         private router: Router,
         private daybookService: DaybookService,
         private noty: NotyService,
-        private msService: MsService
+        private msService: MsService,
+        private authService: AuthService,
     ) {
         super()
     }
@@ -72,6 +74,7 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
 
         // form with validation rules
         this.form = this.formBuilder.group({
+            id: [''],
             number: ['', Validators.required],
             invoice: ['', Validators.required],
             document: ['', Validators.required],
@@ -79,6 +82,8 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
             supplier: [''],
             customer: [''],
             paymentMethod: ['', Validators.required],
+            daybookDetails: [[]],
+            company: [this.authService.userValue.company && this.authService.userValue.company.id, Validators.required]
         });
 
         this.title = 'Add สมุดรายวัน';
@@ -88,11 +93,14 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
             const daybook = await this.daybookService.getById(this.id)
             daybook.transactionDate = daybook.transactionDate ? new Date(daybook.transactionDate) : new Date()
             if (daybook.daybookDetails) {
+                var ids = [];
                 this.daybookDetails = [];
                 for (const detail of daybook.daybookDetails) {
+                    ids.push(detail.id)
                     detail.amount = this.formatPrice(detail.amount)
                     this.daybookDetails.push(detail)
                 }
+                daybook.daybookDetails = ids;
             }
             this.form.patchValue(daybook);
         }
@@ -257,10 +265,10 @@ export class AddEditComponent extends BaseComponent implements OnInit, OnDestroy
             return;
         }
         try {
-            var res = await this.save();
+            var res: any = await this.save();
             if (res) {
                 this.noty.success('Daybook saved');
-                this.router.navigateByUrl('/daybook');
+                this.router.navigateByUrl('/daybook/edit/' + res.id);
             }
         } catch (error) {
             this.noty.error(error);

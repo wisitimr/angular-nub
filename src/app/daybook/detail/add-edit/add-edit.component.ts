@@ -7,6 +7,7 @@ import { BaseComponent } from 'src/app/_components/base.component';
 import { AccountService } from 'src/app/account/account.service';
 import { DaybookDetailService } from '../detail.service';
 import { NotyService } from 'src/app/_services/noty.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class DetailAddEditComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -41,6 +42,7 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
         private daybookDetailService: DaybookDetailService,
         private noty: NotyService,
         private accountService: AccountService,
+        private authService: AuthService,
     ) {
         super()
     }
@@ -61,7 +63,7 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
             amount: ['', Validators.required],
             account: ['', Validators.required],
             daybook: ['', Validators.required],
-            company: ['', Validators.required],
+            company: [this.authService.userValue.company && this.authService.userValue.company.id, Validators.required]
         });
 
         this.title = 'Add สมุดรายวัน';
@@ -166,10 +168,5 @@ export class DetailAddEditComponent extends BaseComponent implements OnInit, OnD
         return this.id
             ? this.daybookDetailService.update(this.id!, this.form.value)
             : this.daybookDetailService.add(this.form.value);
-    }
-
-    deleteDaybookDetail(id: string) {
-        // const account = this.daybookDet!.find(x => x.id === id);
-        // account.isDeleting = true;
     }
 }

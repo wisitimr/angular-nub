@@ -7,6 +7,7 @@ import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
 import { BaseComponent } from 'src/app/_components/base.component';
 import { NotyService } from 'src/app/_services/noty.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent extends BaseComponent implements OnInit {
@@ -33,6 +34,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
+        private authService: AuthService,
         private noty: NotyService
     ) {
         super()
@@ -49,6 +51,7 @@ export class AddEditComponent extends BaseComponent implements OnInit {
             name: ['', Validators.required],
             description: [''],
             type: [''],
+            company: [this.authService.userValue.company && this.authService.userValue.company.id, Validators.required]
         });
 
         this.title = 'Add Account';
@@ -108,9 +111,9 @@ export class AddEditComponent extends BaseComponent implements OnInit {
             return;
         }
         try {
-            var res = await this.save();
+            const res = await this.save();
             if (res) {
-                this.noty.success('Account saved');
+                this.noty.success(res["statusMessage"]);
                 this.router.navigateByUrl('/account');
             }
         } catch (error) {

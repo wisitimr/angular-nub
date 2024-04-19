@@ -15,7 +15,7 @@ export class UserService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/user`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/user`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -24,7 +24,7 @@ export class UserService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/user/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/user/${id}`));
         if (res && res.data) {
             return res.data;
         } else {

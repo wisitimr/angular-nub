@@ -13,6 +13,7 @@ export class NotyService {
             icon: "success",
             title,
             text,
+            timer: 1500,
             footer
         });
     }
@@ -44,20 +45,18 @@ export class NotyService {
         });
     }
 
-    // async confirm(option: any = {}) {
-    //     const result = await swal({
-    //         ...{
-    //             title: 'ยืนยันการทำรายการ',
-    //             type: 'warning',
-    //             showCancelButton: true,
-    //             confirmButtonText: 'ตกลง',
-    //             cancelButtonText: 'ยกเลิก'
-    //         }, ...option
-    //     });
-    //     if (result && result.value) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    async confirm() {
+        const result = await Swal.fire({
+            title: "Delete?",
+            showDenyButton: true,
+            confirmButtonText: "Confirm",
+            denyButtonText: "Cancel",
+            icon: "question"
+        })
+        if (result.isConfirmed) {
+            return true;
+        } else if (result.isDenied) {
+            return false;
+        }
+    }
 }

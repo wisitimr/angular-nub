@@ -14,7 +14,7 @@ export class CustomerService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/customer?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/customer?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -23,7 +23,7 @@ export class CustomerService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/customer/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/customer/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -32,11 +32,11 @@ export class CustomerService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.url}/customers/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/customer/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.url}/customers`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/customer`, params));
     }
 
     async delete(id: string) {

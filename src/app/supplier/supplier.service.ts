@@ -13,7 +13,7 @@ export class SupplierService {
     ) { }
 
     async getAll() {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/supplier?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/supplier?company=${this.authService.userValue.company && this.authService.userValue.company.id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -22,7 +22,7 @@ export class SupplierService {
     }
 
     async getById(id: string) {
-        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/api/supplier/${id}`));
+        const res: Response = await lastValueFrom(this.http.get(`${environment.url}/supplier/${id}`));
         if (res && res.data) {
             return res.data;
         } else {
@@ -31,11 +31,11 @@ export class SupplierService {
     }
 
     async update(id: string, params: any) {
-        return await lastValueFrom(this.http.put(`${environment.url}/suppliers/${id}`, params));
+        return await lastValueFrom(this.http.put(`${environment.url}/supplier/${id}`, params));
     }
 
     async add(params: any) {
-        return await lastValueFrom(this.http.post(`${environment.url}/suppliers`, params));
+        return await lastValueFrom(this.http.post(`${environment.url}/supplier`, params));
     }
 
     async delete(id: string) {
